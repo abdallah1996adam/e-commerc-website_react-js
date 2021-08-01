@@ -1,9 +1,10 @@
-
+import {NavaBar, Products} from './pages'
 
 function App() {
   return (
     <>
-    hello
+    <NavaBar/>
+    <Products/>
     </>
   );
 }
