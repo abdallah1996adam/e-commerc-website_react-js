@@ -3,10 +3,10 @@ import { Grid } from "@material-ui/core";
 
 import Product from "./Product";
 
-import makesStyles from './styles.js'
+import makesStyles from '../../styles.js'
 
 
-const Products = ({productsList}) => {
+const Products = ({productsList, onAddToCart}) => {
 
   const classes = makesStyles();
  
@@ -17,7 +17,7 @@ const Products = ({productsList}) => {
         <Grid container justify="center" spacing={4}>
             {productsList.map((product)=>(
                 <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
-                    <Product product={product}/>
+                    <Product product={product} onAddToCart={onAddToCart}/>
                 </Grid>
             ))}
         </Grid>

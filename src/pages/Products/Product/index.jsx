@@ -12,9 +12,8 @@ import { AddShoppingCart, CallMissed } from "@material-ui/icons";
 
 import makeStyles from "./style.js";
 
-const Product = ({ product }) => {
+const Product = ({ product, onAddToCart }) => {
   const classes = makeStyles();
-  console.log(product);
   return (
     <>
       <Card className={classes.root}>
@@ -25,10 +24,10 @@ const Product = ({ product }) => {
         />
         <CardContent>
           <div className={classes.cardContent}>
-            <Typography variant="h5" gutterBottom>
+            <Typography variant="h6" gutterBottom>
               {product.name}
             </Typography>
-            <Typography variant="h5">
+            <Typography variant="h10">
               {product.price.formatted_with_symbol}
             </Typography>
           </div>
@@ -39,7 +38,11 @@ const Product = ({ product }) => {
           />
         </CardContent>
         <CardActions disableSpacing className={classes.cardActions}>
-          <IconButton disableSpacing aria-label="Add to cart">
+          <IconButton
+            disableSpacing
+            aria-label="Add to cart"
+            onClick={() => onAddToCart(product.id, 1)}
+          >
             <AddShoppingCart />
           </IconButton>
         </CardActions>
