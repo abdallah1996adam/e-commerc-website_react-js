@@ -6,15 +6,20 @@ import CartItem from "./CartItem/CartItem.jsx";
 
 import useStyles from "./styles.js";
 
-const CartList = ({ cart }) => {
+const CartList = ({
+  cart,
+  handleUpdateCart,
+  handleRemoveCart,
+  handleEmptyCart,
+}) => {
   const classes = useStyles();
-
-
 
   const EmptyCart = () => (
     <Typography variant="subtitle1">
       You have no items in your shipping Cart,
-      <Link to="/" className={classes.link}>please add some!</Link> 
+      <Link to="/" className={classes.link}>
+        please add some!
+      </Link>
     </Typography>
   );
 
@@ -23,7 +28,11 @@ const CartList = ({ cart }) => {
       <Grid container spacing={3}>
         {cart.line_items.map((item) => (
           <Grid item xs={12} sm={4} key={item.id}>
-            <CartItem item={item}/>
+            <CartItem
+              item={item}
+              onUpdateCart={handleUpdateCart}
+              onRemoveCart={handleRemoveCart}
+            />
           </Grid>
         ))}
       </Grid>
@@ -38,6 +47,7 @@ const CartList = ({ cart }) => {
             type="button"
             variant="contained"
             color="secondary"
+            onClick={handleEmptyCart}
           >
             Empty Cart
           </Button>
@@ -47,6 +57,8 @@ const CartList = ({ cart }) => {
             type="button"
             variant="contained"
             color="primary"
+            component={Link}
+            to="/checkout"
           >
             Checkout
           </Button>

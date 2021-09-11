@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 import { NavaBar, Products } from "./pages";
-import { CartList } from "./components";
+import { CartList, Checkout } from "./components";
 
 import { commerce } from "./libs/commerce";
 
 function App() {
   const [productsList, setProductsList] = useState([]);
   const [cart, setCart] = useState({});
+  const [order, setOrder]= useState({});
+  const [errorMsg, setErrorMsg] = useState('')
 
   async function fetchData() {
     const { data } = await commerce.products.list();
@@ -39,6 +41,21 @@ function App() {
     setCart(cart);
   }
 
+  async function handleRefresh(){
+    const newCart = await commerce.cart.refresh();
+    setCart(newCart)
+  }
+
+  async function handleCheckout(checkoutTokenId, newOrder){
+    try {
+      const incomingOrder = await commerce.checkout.capture(checkoutTokenId, newOrder)
+      setOrder(incomingOrder)
+      handleRefresh();
+    } catch (error) {
+      setErrorMsg(error.data.error.message)
+    }
+  }
+
   useEffect(() => {
     fetchData();
     fetchCart();
@@ -56,7 +73,20 @@ function App() {
             />
           </Route>
           <Route exact path="/cart">
-            <CartList cart={cart} />
+            <CartList
+              cart={cart}
+              handleUpdateCart={handleUpdateCart}
+              handleRemoveCart={handleRemoveCart}
+              handleEmptyCart={handleEmptyCart}
+            />
+          </Route>
+          <Route exact path="/checkout">
+            <Checkout 
+            cart={cart}
+            order={order}
+            handleCheckout={handleCheckout}
+            error={errorMsg}
+            />
           </Route>
         </Switch>
       </BrowserRouter>
