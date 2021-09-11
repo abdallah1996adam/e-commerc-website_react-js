@@ -11,7 +11,7 @@ import Review from "./Review";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
 
-const Payment = ({ checkoutToken, backStep, handleCheckout, shippingData, netxStep }) => {
+const Payment = ({ checkoutToken, backStep, handleCheckout, shippingData, netxStep, timer}) => {
   const handleSubmit = async (event, elements, stripe) => {
     event.preventDefault();
     if (!stripe || !elements) return;
@@ -48,6 +48,7 @@ const Payment = ({ checkoutToken, backStep, handleCheckout, shippingData, netxSt
         },
       };
       handleCheckout(checkoutToken.id, orderData)
+      timer();
       netxStep();
     }
   };
